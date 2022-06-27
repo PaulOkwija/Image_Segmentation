@@ -9,6 +9,13 @@ from torchvision.transforms import functional as F
 from torchvision.datasets import VisionDataset
 from PIL import Image
 
+
+def pil_loader(path):
+    # open path as file to avoid ResourceWarning (https://github.com/python-pillow/Pillow/issues/835)
+    with open(path, 'rb') as f:
+        img = Image.open(f)
+        return img.convert('RGB')
+
 class ImageFolder(data.Dataset):
 	def __init__(self, root,image_size=224,mode='train',augmentation_prob=0.4):
 		"""Initializes image paths and preprocessing module."""
