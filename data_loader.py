@@ -6,6 +6,7 @@ import torch
 from torch.utils import data
 from torchvision import transforms as T
 from torchvision.transforms import functional as F
+from torchvision.datasets import VisionDataset
 from PIL import Image
 
 class ImageFolder(data.Dataset):
@@ -28,8 +29,8 @@ class ImageFolder(data.Dataset):
 		filename = image_path.split('/')[-1]
 		GT_path = self.GT_paths + filename
 
-		image = Image.open(image_path)
-		GT = Image.open(GT_path)
+		image = pil_loader(image_path)
+		GT = pil_loader(GT_path)
 
 		aspect_ratio = image.size[1]/image.size[0]
 
@@ -85,7 +86,7 @@ class ImageFolder(data.Dataset):
 		image = Transform(image)
 		GT = Transform(GT)
 
-		Norm_ = T.Normalize((0.5), (0.5))
+		Norm_ = T.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
 		image = Norm_(image)
 
 		return image, GT
